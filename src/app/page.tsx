@@ -28,17 +28,34 @@ export default async function HomePage() {
       ? all
       : all.filter((w) => mine.some((g) => g.userId === s.userId && g.wsId === w.id));
   if (visible.length > 0) redirect(`/w/${visible[0].id}`);
+  const isAdmin = me.role === "owner" || me.role === "admin";
   return (
     <main className="flex min-h-full flex-col items-center justify-center px-4">
       <div className="w-full max-w-xs space-y-3 rounded-lg border border-border bg-card p-6 text-center">
         <h1 className="text-xl font-semibold text-foreground">Sin workspaces</h1>
-        <p className="text-sm text-muted-foreground">Pide acceso al admin.</p>
-        <a
-          href="/login"
-          className="inline-block text-sm text-primary underline-offset-4 hover:underline"
-        >
-          Volver a entrar
-        </a>
+        {isAdmin ? (
+          <>
+            <p className="text-sm text-muted-foreground">
+              Crea tu primer workspace para empezar.
+            </p>
+            <a
+              href="/admin/workspaces"
+              className="inline-block rounded bg-primary px-4 py-2 text-sm text-primary-foreground"
+            >
+              Crear workspace
+            </a>
+          </>
+        ) : (
+          <>
+            <p className="text-sm text-muted-foreground">Pide acceso al admin.</p>
+            <a
+              href="/login"
+              className="inline-block text-sm text-primary underline-offset-4 hover:underline"
+            >
+              Volver a entrar
+            </a>
+          </>
+        )}
       </div>
     </main>
   );
