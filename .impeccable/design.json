@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T22:00:00Z",
+  "title": "Design System: Ónix",
+  "extensions": {
+    "colorMeta": {
+      "violet-obsidian": {"role":"primary","displayName":"Violeta Obsidian","canonical":"#a882ff","tonalRamp":["#180e2f","#220070","#3200a3","#4100d6","#550aff","#7f47ff","#b18fff","#eae6f4"]},
+      "graphite-canvas": {"role":"neutral","displayName":"Canvas grafito","canonical":"#1e1e1e","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "graphite-surface": {"role":"neutral","displayName":"Superficie grafito","canonical":"#242424","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "graphite-popover": {"role":"neutral","displayName":"Popover grafito","canonical":"#262626","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "graphite-sidebar": {"role":"neutral","displayName":"Sidebar grafito","canonical":"#1a1a1a","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "graphite-ribbon": {"role":"neutral","displayName":"Ribbon carbón","canonical":"#161616","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "graphite-border": {"role":"neutral","displayName":"Borde grafito","canonical":"#333333","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "graphite-text": {"role":"neutral","displayName":"Texto grafito","canonical":"#dcddde","tonalRamp":["#1e1f1f","#36383a","#4f5254","#686b6e","#818588","#a1a3a6","#c5c7c9","#ededed"]},
+      "graphite-muted": {"role":"neutral","displayName":"Texto secundario","canonical":"#999999","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "graphite-selection": {"role":"secondary","displayName":"Selección violeta oscura","canonical":"#37333f","tonalRamp":["#1e1d20","#36323e","#4f495a","#676076","#807891","#a09aad","#c5c1cd","#edecee"]},
+      "state-danger": {"role":"tertiary","displayName":"Error semántico","canonical":"#e06c75","tonalRamp":["#291415","#5d1419","#871c25","#b12530","#d43541","#df6771","#eba2a8","#f2e9e9"]},
+      "light-canvas": {"role":"neutral","displayName":"Canvas claro","canonical":"#ffffff","tonalRamp":["#1f1f1f","#383838","#525252","#6b6b6b","#858585","#a3a3a3","#c7c7c7","#ededed"]},
+      "light-text": {"role":"neutral","displayName":"Texto claro","canonical":"#2e3338","tonalRamp":["#1d1f20","#33383e","#4a525a","#616b76","#798591","#9aa3ac","#c1c7cc","#ecedee"]},
+      "violet-light": {"role":"primary","displayName":"Violeta claro","canonical":"#7c3aed","tonalRamp":["#1b112c","#2c0967","#400e96","#5412c4","#6a1feb","#8f57f0","#bb98f6","#ece7f3"]}
+    },
+    "typographyMeta": {
+      "body": {"displayName":"Interfaz","purpose":"Navegación, lectura y controles."},
+      "code": {"displayName":"Editor mono","purpose":"Markdown, código y valores técnicos."}
+    },
+    "breakpoints": [
+      {"name":"md","value":"768px","purpose":"Editor y preview pasan de columnas a pila vertical."}
+    ]
+  },
+  "components": [
+    {
+      "name":"Primary Button",
+      "kind":"button",
+      "refersTo":"button-primary",
+      "description":"Acción primaria compacta en el violeta de Ónix.",
+      "html":"<button class=\"ds-button-primary\">Crear nota</button>",
+      "css":".ds-button-primary{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border:1px solid transparent;border-radius:12px;background:var(--primary);color:var(--primary-foreground);font:500 14px/20px Geist, sans-serif;cursor:pointer;transition:filter 150ms ease}.ds-button-primary:hover{filter:brightness(1.08)}.ds-button-primary:focus-visible{outline:2px solid var(--ring);outline-offset:2px}"
+    },
+    {
+      "name":"Text Input",
+      "kind":"input",
+      "refersTo":"input",
+      "description":"Campo compacto, sin decoración y con foco visible.",
+      "html":"<input class=\"ds-input\" placeholder=\"Buscar\" />",
+      "css":".ds-input{width:100%;height:32px;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--foreground);font:400 14px/20px Geist, sans-serif}.ds-input::placeholder{color:var(--muted-foreground)}.ds-input:focus-visible{outline:2px solid var(--ring);outline-offset:1px}"
+    },
+    {
+      "name":"Icon Rail",
+      "kind":"nav",
+      "refersTo":"icon-rail",
+      "description":"Riel fijo de herramientas con icono de trazo fino.",
+      "html":"<nav class=\"ds-rail\" aria-label=\"Riel\"><button class=\"ds-rail-button\" aria-label=\"Archivos\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3 7h7l2 2h9v10H3z\"/></svg></button></nav>",
+      "css":".ds-rail{display:flex;width:48px;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;background:var(--ribbon);color:var(--ribbon-foreground);border-right:1px solid var(--sidebar-border)}.ds-rail-button{display:grid;width:40px;height:40px;place-items:center;border:0;border-radius:6px;background:transparent;color:inherit;cursor:pointer}.ds-rail-button:hover,.ds-rail-button:focus-visible{background:var(--sidebar-accent);color:var(--foreground)}.ds-rail-button:focus-visible{outline:2px solid var(--ring);outline-offset:1px}.ds-rail-button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}"
+    },
+    {
+      "name":"Active Note Row",
+      "kind":"nav",
+      "refersTo":"active-note",
+      "description":"Selected row in the virtualized vault tree.",
+      "html":"<button class=\"ds-note-row\" aria-current=\"page\">Ideas.md</button>",
+      "css":".ds-note-row{display:block;width:100%;height:32px;padding:0 12px;overflow:hidden;border:0;border-radius:4px;background:var(--accent);color:var(--accent-foreground);font:400 14px/32px Geist, sans-serif;text-align:left;text-overflow:ellipsis;white-space:nowrap}"
+    },
+    {
+      "name":"Active Tab",
+      "kind":"nav",
+      "refersTo":"tab-active",
+      "description":"Open note tab attached to the editor surface.",
+      "html":"<div class=\"ds-tab\"><span>Ideas.md</span><button aria-label=\"Cerrar nota\">×</button></div>",
+      "css":".ds-tab{display:flex;height:36px;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border);border-bottom:0;border-radius:6px 6px 0 0;background:var(--background);color:var(--foreground);font:400 14px/20px Geist, sans-serif}.ds-tab button{border:0;background:transparent;color:var(--muted-foreground);cursor:pointer}.ds-tab button:focus-visible{outline:2px solid var(--ring);outline-offset:1px}"
+    },
+    {
+      "name":"Status Bar",
+      "kind":"custom",
+      "refersTo":"status-bar",
+      "description":"Compact workspace and save-state strip at the bottom of the editor.",
+      "html":"<footer class=\"ds-status\"><span>Casa</span><span>·</span><span>12 notas</span><span>·</span><span>Guardado</span></footer>",
+      "css":".ds-status{display:flex;height:24px;align-items:center;gap:8px;padding:0 12px;border-top:1px solid var(--border);background:var(--sidebar);color:var(--muted-foreground);font:400 11px/16px Geist, sans-serif}.ds-status span:first-child{color:var(--sidebar-foreground);font-weight:500}"
+    }
+  ],
+  "narrative": {
+    "northStar":"Taller personal",
+    "overview":"Ónix es un espacio de escritura y pensamiento en web que sigue patrones reconocibles de Obsidian. Su voz es discreta y directa; los controles están donde se esperan y no compiten con las notas. El archivo Markdown sigue siendo la fuente de verdad.",
+    "keyCharacteristics":["Dark-first grafito con variante clara.","Riel, árbol, tabs, editor/preview y status bar.","Geist para UI y Geist Mono para edición/código.","Violeta para acción, foco, selección y enlaces."],
+    "rules":[
+      {"name":"The Violet Has a Job Rule","body":"El violeta significa acción, foco o navegación; no se dispersa como adorno.","section":"colors"},
+      {"name":"The Workspace First Rule","body":"Al entrar, el usuario ve su workspace y notas; ajustes y administración no compiten con la escritura.","section":"layout"}
+    ],
+    "dos":["Do conservar el orden Obsidian: archivos → nota → editor/preview.","Do mostrar el estado de guardado y distinguir solo lectura.","Do preservar Markdown, frontmatter y wikilinks al guardar."],
+    "donts":["Don't convertir el shell de escritura en un dashboard genérico.","Don't separar paneles con sombras cuando bastan superficies tonales.","Don't comunicar estados solo mediante color."]
+  }
+}
