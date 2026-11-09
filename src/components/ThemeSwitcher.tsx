@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { Select, SelectItem, SelectPopup, SelectTrigger } from "./ui/select";
 
 export const COLOR_PRESETS = ["obsidian", "obsidian-claro"] as const;
@@ -32,35 +33,29 @@ export function readStoredPreset(): ColorPreset {
 
 export function applyColorPreset(preset: ColorPreset): void {
   document.documentElement.dataset.theme = preset;
-  // next-themes fuerza `.dark` por defecto; el preset claro lo retira para
-  // que `dark:` y el editor sigan al preset, no a la clase.
-  if (preset === "obsidian-claro") {
-    document.documentElement.classList.remove("dark");
-  } else {
-    document.documentElement.classList.add("dark");
+  try {
+    localStorage.setItem(COLOR_PRESET_KEY, preset);
+  } catch {
+    // Sin almacenamiento: el cambio solo vive en esta sesión.
   }
 }
 
 // Selector de preset de color (Ajustes → Apariencia → Color).
-// Persiste en localStorage y refleja en `data-theme` de <html>.
+// next-themes es la fuente de verdad (`data-theme`); la clave local solo
+// sirve al script pre-paint de layout para evitar el flash inicial.
 export function ThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
   const [preset, setPreset] = useState<ColorPreset>(DEFAULT_PRESET);
 
   useEffect(() => {
-    const stored = readStoredPreset();
-    setPreset(stored);
-    applyColorPreset(stored);
-  }, []);
+    setPreset(isPreset(theme ?? null) ? theme as ColorPreset : readStoredPreset());
+  }, [theme]);
 
   const onValueChange = (v: unknown) => {
     const next = typeof v === "string" && isPreset(v) ? v : DEFAULT_PRESET;
     setPreset(next);
+    setTheme(next);
     applyColorPreset(next);
-    try {
-      localStorage.setItem(COLOR_PRESET_KEY, next);
-    } catch {
-      // Sin almacenamiento: el cambio solo vive en esta sesión.
-    }
   };
 
   return (

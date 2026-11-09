@@ -64,7 +64,7 @@ function RibbonButton({
       title={label}
       aria-label={label}
       onClick={onClick}
-      className={`flex h-10 w-10 items-center justify-center rounded-md transition-colors ${
+      className={`flex h-10 w-10 items-center justify-center rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
         active
           ? "bg-[color-mix(in_srgb,var(--primary)_20%,transparent)] text-primary"
           : "text-(--ribbon-foreground) hover:bg-white/5 hover:text-foreground"
@@ -267,7 +267,7 @@ export function AppShell({
                   type="button"
                   aria-label="Cerrar nota"
                   onClick={onCloseTab}
-                  className="rounded p-0.5 text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                  className="rounded p-0.5 text-muted-foreground outline-none hover:bg-white/5 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
                 >
                   <X size={14} />
                 </button>
@@ -279,7 +279,7 @@ export function AppShell({
                 aria-label="Nota nueva"
                 title="Nota nueva"
                 onClick={onNewNote}
-                className="flex items-center rounded-t-md px-2 text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                className="flex items-center rounded-t-md px-2 text-muted-foreground outline-none hover:bg-white/5 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
               >
                 <Plus size={16} />
               </button>

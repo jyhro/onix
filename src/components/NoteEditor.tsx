@@ -7,21 +7,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AppShell } from "./AppShell";
 import { MarkdownPreview } from "./MarkdownPreview";
 import { createUntitledNote, noteUrl } from "@/lib/new-note";
+import { resolveEditorTheme } from "@/lib/editorTheme";
 import { obsidianEditorTheme } from "./obsidianEditorTheme";
 
 export type SaveState = "idle" | "saving" | "saved" | "error";
-
-// El editor sigue el tema de la app: oscuro si <html> lleva `.dark`
-// (o data-theme="dark"); los presets de color viven en `data-theme`.
-// Exportada para probarla sin DOM.
-export function resolveEditorTheme(el: {
-  classList: { contains(c: string): boolean };
-  dataset: { theme?: string };
-}): "dark" | "light" {
-  return el.classList.contains("dark") || el.dataset.theme === "dark"
-    ? "dark"
-    : "light";
-}
 
 // Lee el tema actual de <html> y lo sigue ante cambios (Ajustes → Apariencia).
 function useEditorTheme(): "dark" | "light" {

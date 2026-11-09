@@ -1,12 +1,12 @@
-# Superficie principal: vault (`/` y `/w/[ws]/n/[id]`)
+# Superficie principal: vault (riel + árbol + tabs + editor/preview + status bar)
 
-Modo: **Operate**. Mundo: shadcn neutral dark-first (heredado, no se discute aquí).
+Modo: **Operate**. Mundo: Obsidian fiel (reemplaza shadcn neutral por decisión del dueño, 2026-11-09). Contrato vigente en `.impeccable/surfaces/src-app-w-ws-n-id-page-tsx.md`.
 
-## Direction contract
+## Direction contract (resumen)
 
-- **THESIS:** el vault se opera, no se contempla: escribir, enlazar y encontrar en milisegundos. Se rehúsa el dashboard con widgets y el landing dentro de la app.
-- **OWN-WORLD:** shadcn neutral dark-first, sidebar densa virtualizada, editor mono a la izquierda, preview GFM a la derecha, acento solo en acciones y `[[enlaces]]`.
-- **STORY:** el usuario abre, ve sus workspaces permitidos, escribe con atajos Obsidian, enlaza con `[[ ]]`, encuentra al instante; el admin gestiona accesos sin salir del flujo.
-- **FIRST VIEWPORT:** sidebar (workspaces + notas del workspace activo) | editor | preview; barra mínima con búsqueda (⌘K) y ajustes. Acción primaria: nota nueva.
-- **FORM:** tres paneles colapsables estilo Obsidian sobre shadcn; code-led (Operate): la ambición vive en este contrato, sin comp previo.
+- **THESIS:** Ónix es Obsidian en la web: riel de iconos, árbol de notas, pestañas, editor + preview lado a lado, barra de estado. Nada de panel admin genérico.
+- **OWN-WORLD:** grafito `#1e1e1e`/`#262626`, bordes `#333`, texto `#dcddde`, acento morado `#a882ff`; tipografía de sistema; Lucide fino; tabs con cierre; status bar 24px (workspace · notas · guardado).
+- **STORY:** abrir → árbol → editar/preview → `[[enlaces]]` morados → admin desde el riel.
+- **FIRST VIEWPORT:** riel | árbol+buscar | tabs+editor/preview | status bar. Acción primaria: + nota nueva.
+- **FORM:** shell Obsidian fiel, code-led. seed: none (user-pinned, no roll).
 - **FINISH:** unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.

@@ -56,8 +56,8 @@ Plan: `docs/superpowers/plans/2026-11-09-onix-plan.md`.
 
 ## UI
 
-- TailwindCSS + shadcn, tema base neutral. Sin CSS suelto salvo `src/themes/*.css`.
-- Presets de color (neutral, stone, zinc, slate) vía `data-theme` + `next-themes`, en Ajustes → Apariencia → Color, persistidos en localStorage.
+- Mundo Obsidian fiel (dark-first): riel de iconos, árbol, pestañas, editor+preview, status bar. Tokens propios en `src/themes/obsidian.css` (presets `obsidian`/`obsidian-claro` vía `data-theme` + `next-themes`); sin shadcn neutral.
+- Sin CSS suelto salvo `src/themes/*.css`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

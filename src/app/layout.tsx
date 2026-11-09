@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 // Restaura el preset de color antes del primer pintado (default: obsidian).
-const PRESET_SCRIPT = `(function(){try{var p=localStorage.getItem("onix-color-preset")||"obsidian";document.documentElement.dataset.theme=p;if(p==="obsidian-claro"){document.documentElement.classList.remove("dark")}else{document.documentElement.classList.add("dark")}}catch(e){document.documentElement.dataset.theme="obsidian"}})()`;
+const PRESET_SCRIPT = `(function(){try{var p=localStorage.getItem("onix-color-preset")||"obsidian";if(p!=="obsidian"&&p!=="obsidian-claro")p="obsidian";document.documentElement.dataset.theme=p}catch(e){document.documentElement.dataset.theme="obsidian"}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -33,8 +32,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: script estático sin entrada de usuario */}
         <script dangerouslySetInnerHTML={{ __html: PRESET_SCRIPT }} />
         <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
+          attribute="data-theme"
+          defaultTheme="obsidian"
           enableSystem={false}
         >
           {children}

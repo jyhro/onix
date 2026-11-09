@@ -39,7 +39,7 @@ Lo que un clon genérico no puede copiar: vaults en archivos `.md` en su propio 
 
 ## Brand Commitments
 
-Nombre Ónix. Mundo visual fijado por el dueño: shadcn tema neutral, dark-first. Sin claims inventados.
+Nombre Ónix. Mundo visual: clon fiel de Obsidian (grafito oscuro, acento morado, riel/pestañas/status bar) — reemplaza al shadcn neutral por decisión del dueño. Sin claims inventados.
 
 ## Evidence on Hand
 
