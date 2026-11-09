@@ -53,6 +53,16 @@ describe("rutas de notas", () => {
     assert.equal(res.status, 400);
   });
 
+  it("POST con id numérico → 400 (no 500)", async () => {
+    const res = await postNotes(reqWithBody("POST", '{"id":42,"content":"x"}'), params());
+    assert.equal(res.status, 400);
+  });
+
+  it("POST sin id → 400", async () => {
+    const res = await postNotes(reqWithBody("POST", '{"content":"x"}'), params());
+    assert.equal(res.status, 400);
+  });
+
   it("PUT con body no-JSON → 400", async () => {
     const res = await putOne(reqWithBody("PUT", "{mal"), params(["a"]));
     assert.equal(res.status, 400);

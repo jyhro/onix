@@ -10,20 +10,24 @@ export interface VaultNote {
   data: Record<string, unknown>;
 }
 
+function fail(message: string, status: number): never {
+  throw Object.assign(new Error(message), { status });
+}
+
 function resolveId(root: string, id: string): { abs: string; id: string } {
   const clean = (id ?? "").trim();
-  if (!clean) throw new Error("id vacío");
+  if (!clean) fail("id vacío", 400);
   if (path.isAbsolute(clean) || clean.includes("\\") || clean.includes("\0")) {
-    throw new Error(`id fuera del vault: ${id}`);
+    fail(`id fuera del vault: ${id}`, 400);
   }
   const segments = clean.split("/");
   if (segments.some((s) => s === "" || s === "." || s === "..")) {
-    throw new Error(`id fuera del vault: ${id}`);
+    fail(`id fuera del vault: ${id}`, 400);
   }
   const rootAbs = path.resolve(root);
   const abs = path.resolve(rootAbs, ...segments) + ".md";
   if (abs !== rootAbs && !abs.startsWith(rootAbs + path.sep)) {
-    throw new Error(`id fuera del vault: ${id}`);
+    fail(`id fuera del vault: ${id}`, 400);
   }
   return { abs, id: segments.join("/") };
 }
@@ -59,9 +63,9 @@ export async function readNote(root: string, id: string): Promise<VaultNote> {
 }
 
 export async function writeNote(root: string, id: string, content: string): Promise<void> {
-  if (typeof content !== "string") throw new Error("contenido inválido");
+  if (typeof content !== "string") fail("contenido inválido", 400);
   if (Buffer.byteLength(content, "utf8") > MAX_NOTE_BYTES) {
-    throw new Error("nota mayor de 1 MB");
+    fail("nota mayor de 1 MB", 413);
   }
   const { abs } = resolveId(root, id);
   await mkdir(path.dirname(abs), { recursive: true });

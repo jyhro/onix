@@ -14,9 +14,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ ws: str
 export async function POST(req: Request, { params }: { params: Promise<{ ws: string }> }) {
   try {
     const root = workspaceRoot((await params).ws);
-    const { id, content } = await readJson<{ id: string; content: string }>(req);
-    await writeNote(root, id, content);
-    return NextResponse.json({ id: (id as string).trim() }, { status: 201 });
+    const body = await readJson<{ id: unknown; content: unknown }>(req);
+    if (typeof body.id !== "string" || typeof body.content !== "string") {
+      throw Object.assign(new Error("id y content deben ser strings"), { status: 400 });
+    }
+    await writeNote(root, body.id, body.content);
+    return NextResponse.json({ id: body.id.trim() }, { status: 201 });
   } catch (e) {
     return errRes(e);
   }

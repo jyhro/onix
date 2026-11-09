@@ -21,7 +21,8 @@ export async function readJson<T>(req: Request): Promise<T> {
 // Sin auth hasta Task 6 (rutas abiertas): solo mapea errores de vault.
 export function errRes(e: unknown): NextResponse {
   const msg = e instanceof Error ? e.message : "error";
-  if ((e as { status?: number })?.status === 400) return NextResponse.json({ error: msg }, { status: 400 });
+  const status = (e as { status?: number })?.status;
+  if (status === 400 || status === 413) return NextResponse.json({ error: msg }, { status });
   if (msg.includes("fuera del vault") || msg.includes("vacío") || msg.includes("inválido"))
     return NextResponse.json({ error: msg }, { status: 400 });
   if (msg.includes("1 MB")) return NextResponse.json({ error: msg }, { status: 413 });
