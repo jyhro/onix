@@ -98,6 +98,7 @@ export async function createUser(input: {
 }
 
 export async function verifyUser(name: string, password: string): Promise<User | null> {
+  if (typeof password !== "string" || !password) return null;
   const users = await readJson<StoredUser>("users.json");
   const found = users.find((u) => u.name === (name ?? "").trim());
   if (!found) return null;

@@ -16,6 +16,8 @@ describe("system-store", () => {
     assert((await verifyUser("admin", "mal")) === null);
     const w = await createWorkspace(" Casa ");
     assert(can(a.id, w.id, "write") === true); // owner todo
+    const adm = await createUser({ name: "adm", password: "z", role: "admin" });
+    assert(can(adm.id, w.id, "read") === true); // admin todo
     const u = await createUser({ name: "u", password: "y", role: "user" });
     assert(can(u.id, w.id, "read") === false);
     await grant(u.id, w.id, "read");
