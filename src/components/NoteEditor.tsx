@@ -119,7 +119,10 @@ export function NoteView(props: NoteEditorProps) {
     <AppShell
       onSelectNote={(wsId, noteId) =>
         router.push(
-          `/w/${encodeURIComponent(wsId)}/n/${encodeURIComponent(noteId)}`,
+          `/w/${encodeURIComponent(wsId)}/n/${noteId
+            .split("/")
+            .map((s) => encodeURIComponent(s))
+            .join("/")}`,
         )
       }
     >

@@ -6,7 +6,7 @@ import { NoteView } from "@/components/NoteEditor";
 import { SESSION_COOKIE } from "@/lib/session";
 import { readNote } from "@/lib/vault";
 
-type Params = { params: Promise<{ ws: string; id: string }> };
+type Params = { params: Promise<{ ws: string; id: string[] }> };
 
 // Notas por usuario y grants: ruta bloqueante (nunca prerender).
 export const instant = false;
@@ -24,8 +24,8 @@ function statusOf(e: unknown): number | undefined {
 // Gate server-side (Task 6): el middleware (Edge) no puede leer grants;
 // sin sesión → /login, sin grant de lectura → 404 (no filtrar existencia).
 // Va en Suspense como en las páginas admin: `cookies()` impide prerender.
-async function NoteGate({ ws, id }: { ws: string; id: string }) {
-  const noteId = decodeURIComponent(id);
+async function NoteGate({ ws, id }: { ws: string; id: string[] }) {
+  const noteId = id.map((s) => decodeURIComponent(s)).join("/");
   const token = (await cookies()).get(SESSION_COOKIE)?.value ?? "";
   const req = reqFromCookies(token);
 
