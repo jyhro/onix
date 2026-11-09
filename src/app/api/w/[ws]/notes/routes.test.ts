@@ -10,6 +10,8 @@ import { POST as postNotes } from "./route";
 const WS = "t4";
 let prev: string | undefined;
 
+function params(): { params: Promise<{ ws: string }> };
+function params(id: string[]): { params: Promise<{ ws: string; id: string[] }> };
 function params(id?: string[]) {
   return id === undefined
     ? { params: Promise.resolve({ ws: WS }) }
