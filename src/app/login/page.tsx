@@ -11,7 +11,7 @@ async function login(formData: FormData) {
     String(formData.get("password") ?? ""),
   );
   if (!user) redirect("/login?error=1");
-  (await cookies()).set(SESSION_COOKIE, await signSession(user.id), {
+  (await cookies()).set(SESSION_COOKIE, await signSession(user.id, user.role), {
     httpOnly: true,
     path: "/",
     maxAge: 60 * 60 * 24 * 30,

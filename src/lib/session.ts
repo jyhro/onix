@@ -8,17 +8,25 @@ function key(): Uint8Array | null {
   return new TextEncoder().encode(s);
 }
 
-export async function signSession(userId: string): Promise<string> {
+export interface Session {
+  userId: string;
+  // Rol embebido al entrar (login). Las sesiones anteriores no lo traen.
+  role?: string;
+}
+
+export async function signSession(userId: string, role?: string): Promise<string> {
   const k = key();
   if (!k) throw new Error("SESSION_SECRET no configurado");
-  return await new jose.SignJWT({ userId })
+  const claims: Record<string, string> = { userId };
+  if (role) claims.role = role;
+  return await new jose.SignJWT(claims)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("30d")
     .sign(k);
 }
 
-export async function getSession(req: Request): Promise<{ userId: string } | null> {
+export async function getSession(req: Request): Promise<Session | null> {
   const k = key();
   if (!k) return null;
   const token = (req.headers.get("cookie") ?? "")
@@ -30,7 +38,8 @@ export async function getSession(req: Request): Promise<{ userId: string } | nul
   try {
     const { payload } = await jose.jwtVerify(token, k);
     if (typeof payload.userId !== "string" || !payload.userId) return null;
-    return { userId: payload.userId };
+    const role = typeof payload.role === "string" ? payload.role : undefined;
+    return role ? { userId: payload.userId, role } : { userId: payload.userId };
   } catch {
     return null;
   }

@@ -4,6 +4,9 @@ const nextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
+  experimental: {
+    authInterrupts: true,
+  },
   turbopack: {
     rules: {
       "*.css": {

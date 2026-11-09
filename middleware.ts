@@ -28,6 +28,15 @@ export async function middleware(req: NextRequest) {
 
   // Grants (403) se verifican en cada ruta (Node runtime): el Edge Runtime
   // del middleware no puede leer los JSON del sistema. Sin sesión → 401 aquí.
+  // Excepción: /admin/* se cierra por rol del JWT (sin fs): owner|admin pasan,
+  // con sesión pero otro rol → 403 real antes del render (el streaming PPR no
+  // puede cambiar el status una vez emitido el shell).
+  if (pathname.startsWith("/admin/")) {
+    const role = session?.role;
+    if (role !== "owner" && role !== "admin") {
+      return new NextResponse("sin permiso", { status: 403 });
+    }
+  }
   return NextResponse.next();
 }
 
