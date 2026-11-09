@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { listNotes, writeNote } from "@/lib/vault";
-import { errRes, workspaceRoot } from "../lib";
+import { errRes, readJson, workspaceRoot } from "../lib";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ ws: string }> }) {
   try {
@@ -14,7 +14,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ ws: str
 export async function POST(req: Request, { params }: { params: Promise<{ ws: string }> }) {
   try {
     const root = workspaceRoot((await params).ws);
-    const { id, content } = await req.json();
+    const { id, content } = await readJson<{ id: string; content: string }>(req);
     await writeNote(root, id, content);
     return NextResponse.json({ id: (id as string).trim() }, { status: 201 });
   } catch (e) {

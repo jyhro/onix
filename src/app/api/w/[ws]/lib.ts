@@ -9,6 +9,15 @@ export function workspaceRoot(ws: string): string {
   return path.join(process.env.VAULT_ROOT ?? "./vault", "workspaces", clean);
 }
 
+// Body JSON inválido → 400 (no 500).
+export async function readJson<T>(req: Request): Promise<T> {
+  try {
+    return (await req.json()) as T;
+  } catch {
+    throw Object.assign(new Error("body JSON inválido"), { status: 400 });
+  }
+}
+
 // Sin auth hasta Task 6 (rutas abiertas): solo mapea errores de vault.
 export function errRes(e: unknown): NextResponse {
   const msg = e instanceof Error ? e.message : "error";
