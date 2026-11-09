@@ -106,6 +106,10 @@ export async function verifyUser(name: string, password: string): Promise<User |
   return publicUser(found);
 }
 
+export async function hasUsers(): Promise<boolean> {
+  return (await readJson<StoredUser>("users.json")).length > 0;
+}
+
 export async function createWorkspace(name: string): Promise<Workspace> {
   const ws: Workspace = { id: randomUUID(), name: cleanName(name) };
   const all = await readJson<Workspace>("workspaces.json");
