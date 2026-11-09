@@ -21,11 +21,22 @@ function statusOf(e: unknown): number | undefined {
   return (e as { status?: number })?.status;
 }
 
+// Los params de esta página llegan codificados ("%20", "%25") — verificado
+// contra el build: la ruta API hermana sí los recibe decodificados.
+// Se decodifica por segmento con red: un "%" literal no debe tumbar el render.
+function decodeSeg(s: string): string {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 // Gate server-side (Task 6): el middleware (Edge) no puede leer grants;
 // sin sesión → /login, sin grant de lectura → 404 (no filtrar existencia).
 // Va en Suspense como en las páginas admin: `cookies()` impide prerender.
 async function NoteGate({ ws, id }: { ws: string; id: string[] }) {
-  const noteId = id.map((s) => decodeURIComponent(s)).join("/");
+  const noteId = id.map(decodeSeg).join("/");
   const token = (await cookies()).get(SESSION_COOKIE)?.value ?? "";
   const req = reqFromCookies(token);
 

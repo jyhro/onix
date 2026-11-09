@@ -8,6 +8,36 @@ import { AppShell } from "./AppShell";
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
+// El editor sigue el tema de la app: oscuro si <html> lleva `.dark`
+// (o data-theme="dark"); los presets de color viven en `data-theme`.
+// Exportada para probarla sin DOM.
+export function resolveEditorTheme(el: {
+  classList: { contains(c: string): boolean };
+  dataset: { theme?: string };
+}): "dark" | "light" {
+  return el.classList.contains("dark") || el.dataset.theme === "dark"
+    ? "dark"
+    : "light";
+}
+
+// Lee el tema actual de <html> y lo sigue ante cambios (Ajustes → Apariencia).
+function useEditorTheme(): "dark" | "light" {
+  const [theme, setTheme] = useState<"dark" | "light">("light");
+  useEffect(() => {
+    const el = document.documentElement;
+    setTheme(resolveEditorTheme(el));
+    const obs = new MutationObserver(() =>
+      setTheme(resolveEditorTheme(el)),
+    );
+    obs.observe(el, {
+      attributes: true,
+      attributeFilter: ["class", "data-theme"],
+    });
+    return () => obs.disconnect();
+  }, []);
+  return theme;
+}
+
 function apiUrl(ws: string, id: string): string {
   const segs = id
     .split("/")
@@ -33,6 +63,7 @@ export function NoteEditor({
 }: NoteEditorProps) {
   const [value, setValue] = useState(initialContent);
   const [status, setStatus] = useState<SaveState>("idle");
+  const editorTheme = useEditorTheme();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(
@@ -101,7 +132,7 @@ export function NoteEditor({
           value={value}
           onChange={onChange}
           extensions={[markdown()]}
-          theme="dark"
+          theme={editorTheme}
           editable={canWrite}
           basicSetup={{ lineNumbers: true, foldGutter: false }}
           className="h-full"
