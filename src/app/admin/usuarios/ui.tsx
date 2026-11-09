@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { User } from "@/lib/system-store";
 
 const input =
-  "w-full rounded border border-zinc-700 bg-transparent px-3 py-2 text-sm";
+  "w-full rounded border border-input bg-transparent px-3 py-2 text-sm";
 
 export function UsuariosUI({ initial }: { initial: User[] }) {
   const [users, setUsers] = useState<User[]>(initial);
@@ -42,14 +42,14 @@ export function UsuariosUI({ initial }: { initial: User[] }) {
         <h1 className="mb-3 text-xl font-semibold">Usuarios</h1>
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-zinc-400">
+            <tr className="text-left text-muted-foreground">
               <th className="py-1">Nombre</th>
               <th className="py-1">Rol</th>
             </tr>
           </thead>
           <tbody>
             {users.map((u) => (
-              <tr key={u.id} className="border-t border-zinc-800">
+              <tr key={u.id} className="border-t border-border">
                 <td className="py-1">{u.name}</td>
                 <td className="py-1">{u.role}</td>
               </tr>

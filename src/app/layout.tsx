@@ -18,15 +18,15 @@ export const metadata: Metadata = {
   description: "Clon web de Obsidian: tus notas en la web",
 };
 
-// Restaura el preset de color antes del primer pintado (default: neutral).
-const PRESET_SCRIPT = `(function(){try{document.documentElement.dataset.theme=localStorage.getItem("onix-color-preset")||"neutral"}catch(e){document.documentElement.dataset.theme="neutral"}})()`;
+// Restaura el preset de color antes del primer pintado (default: obsidian).
+const PRESET_SCRIPT = `(function(){try{var p=localStorage.getItem("onix-color-preset")||"obsidian";document.documentElement.dataset.theme=p;if(p==="obsidian-claro"){document.documentElement.classList.remove("dark")}else{document.documentElement.classList.add("dark")}}catch(e){document.documentElement.dataset.theme="obsidian"}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
       suppressHydrationWarning
-      data-theme="neutral"
+      data-theme="obsidian"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">

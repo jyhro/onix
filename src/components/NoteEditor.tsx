@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppShell } from "./AppShell";
 import { MarkdownPreview } from "./MarkdownPreview";
+import { createUntitledNote, noteUrl } from "@/lib/new-note";
+import { obsidianEditorTheme } from "./obsidianEditorTheme";
 
-type SaveState = "idle" | "saving" | "saved" | "error";
+export type SaveState = "idle" | "saving" | "saved" | "error";
 
 // El editor sigue el tema de la app: oscuro si <html> lleva `.dark`
 // (o data-theme="dark"); los presets de color viven en `data-theme`.
@@ -54,6 +56,8 @@ interface NoteEditorProps {
   canWrite: boolean;
   /** Ids con grant para el preview (GET /api/w/[ws]/notes). */
   ids: string[];
+  /** Notifica guardados a quien renderiza (barra de estado del shell). */
+  onStatusChange?: (s: SaveState) => void;
 }
 
 // Editor markdown con guardado automático (debounce 800 ms).
@@ -64,9 +68,9 @@ export function NoteEditor({
   initialContent,
   canWrite,
   ids,
+  onStatusChange,
 }: NoteEditorProps) {
   const [value, setValue] = useState(initialContent);
-  const [status, setStatus] = useState<SaveState>("idle");
   const editorTheme = useEditorTheme();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -91,7 +95,7 @@ export function NoteEditor({
     (v: string) => {
       setValue(v);
       if (!canWrite) return;
-      setStatus("saving");
+      onStatusChange?.("saving");
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(async () => {
         try {
@@ -101,43 +105,24 @@ export function NoteEditor({
             body: JSON.stringify({ content: v }),
           });
           if (!res.ok) throw new Error(`PUT ${res.status}`);
-          setStatus("saved");
+          onStatusChange?.("saved");
         } catch {
-          setStatus("error");
+          onStatusChange?.("error");
         }
       }, 800);
     },
-    [ws, id, canWrite],
+    [ws, id, canWrite, onStatusChange],
   );
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-border px-4 py-2">
-        <h1 className="truncate text-sm font-medium" title={id}>
-          {id}
-        </h1>
-        <span
-          aria-live="polite"
-          className="shrink-0 text-xs text-muted-foreground"
-        >
-          {!canWrite
-            ? "Solo lectura"
-            : status === "saving"
-              ? "Guardando…"
-              : status === "saved"
-                ? "Guardado"
-                : status === "error"
-                  ? "Error al guardar"
-                  : ""}
-        </span>
-      </div>
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <div className="min-h-0 flex-1 overflow-auto">
           <CodeMirror
             value={value}
             onChange={onChange}
             extensions={[markdown()]}
-            theme={editorTheme}
+            theme={editorTheme === "dark" ? obsidianEditorTheme : "light"}
             editable={canWrite}
             basicSetup={{ lineNumbers: true, foldGutter: false }}
             className="h-full"
@@ -160,18 +145,35 @@ export function NoteEditor({
 // ya se aplicó en el server component). `key` reinicia el editor al cambiar de nota.
 export function NoteView(props: NoteEditorProps) {
   const router = useRouter();
+  const [saveState, setSaveState] = useState<SaveState>("idle");
+
+  const newNote = useCallback(async () => {
+    try {
+      const id = await createUntitledNote(props.ws);
+      router.push(noteUrl(props.ws, id));
+    } catch {
+      // 403 u otro: la API ya denegó; no hay nada que navegar.
+    }
+  }, [props.ws, router]);
+
   return (
     <AppShell
-      onSelectNote={(wsId, noteId) =>
-        router.push(
-          `/w/${encodeURIComponent(wsId)}/n/${noteId
-            .split("/")
-            .map((s) => encodeURIComponent(s))
-            .join("/")}`,
-        )
+      activeWsId={props.ws}
+      tabTitle={props.id}
+      tabBadge={props.canWrite ? null : "Solo lectura"}
+      onCloseTab={() =>
+        router.push(`/w/${encodeURIComponent(props.ws)}`)
       }
+      canCreate={props.canWrite}
+      onNewNote={props.canWrite ? newNote : undefined}
+      saveState={saveState}
+      onSelectNote={(wsId, noteId) => router.push(noteUrl(wsId, noteId))}
     >
-      <NoteEditor key={`${props.ws}/${props.id}`} {...props} />
+      <NoteEditor
+        key={`${props.ws}/${props.id}`}
+        {...props}
+        onStatusChange={setSaveState}
+      />
     </AppShell>
   );
 }

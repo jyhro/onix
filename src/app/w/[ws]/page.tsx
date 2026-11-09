@@ -40,7 +40,15 @@ async function WsGate({ ws }: { ws: string }) {
     notFound();
   }
 
-  return <WsLandingView />;
+  let canWrite = false;
+  try {
+    await requireGrant(req, ws, "write");
+    canWrite = true;
+  } catch {
+    canWrite = false;
+  }
+
+  return <WsLandingView ws={ws} canWrite={canWrite} />;
 }
 
 export default async function WsPage({ params }: Params) {

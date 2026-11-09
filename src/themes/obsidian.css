@@ -1,0 +1,76 @@
+/* Mundo Obsidian (clon fiel, dark-first). Selectores con :root[...] para ganar
+   a :root y .dark de globals.css sin importar el orden. */
+
+:root[data-theme="obsidian"] {
+  --background: #1e1e1e;
+  --foreground: #dcddde;
+  --card: #242424;
+  --card-foreground: #dcddde;
+  --popover: #262626;
+  --popover-foreground: #dcddde;
+  --primary: #a882ff;
+  --primary-foreground: #1e1e1e;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #dcddde;
+  --muted: #2a2a2a;
+  --muted-foreground: #999999;
+  --accent: #37333f;
+  --accent-foreground: #e8e6e3;
+  --destructive: #e06c75;
+  --border: #333333;
+  --input: #2a2a2a;
+  --ring: #a882ff;
+  --chart-1: #a882ff;
+  --chart-2: #7c5cd6;
+  --chart-3: #5b5b66;
+  --chart-4: #8e8e93;
+  --chart-5: #3a3a3c;
+  --radius: 0.375rem;
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #dcddde;
+  --sidebar-primary: #a882ff;
+  --sidebar-primary-foreground: #1e1e1e;
+  --sidebar-accent: #2a2a2a;
+  --sidebar-accent-foreground: #dcddde;
+  --sidebar-border: #2b2b2b;
+  --sidebar-ring: #a882ff;
+  --ribbon: #161616;
+  --ribbon-foreground: #999999;
+}
+
+:root[data-theme="obsidian-claro"] {
+  --background: #ffffff;
+  --foreground: #2e3338;
+  --card: #f5f5f5;
+  --card-foreground: #2e3338;
+  --popover: #ffffff;
+  --popover-foreground: #2e3338;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f2f2;
+  --secondary-foreground: #2e3338;
+  --muted: #f2f2f2;
+  --muted-foreground: #6a737d;
+  --accent: #ece7f8;
+  --accent-foreground: #2e3338;
+  --destructive: #c74343;
+  --border: #e0e0e0;
+  --input: #ffffff;
+  --ring: #7c3aed;
+  --chart-1: #7c3aed;
+  --chart-2: #a882ff;
+  --chart-3: #b8b8c0;
+  --chart-4: #8e8e93;
+  --chart-5: #6a737d;
+  --radius: 0.375rem;
+  --sidebar: #f2f2f2;
+  --sidebar-foreground: #2e3338;
+  --sidebar-primary: #7c3aed;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e9e9e9;
+  --sidebar-accent-foreground: #2e3338;
+  --sidebar-border: #e0e0e0;
+  --sidebar-ring: #7c3aed;
+  --ribbon: #e9e9e9;
+  --ribbon-foreground: #6a737d;
+}

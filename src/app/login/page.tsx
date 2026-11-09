@@ -31,16 +31,16 @@ async function LoginForm({ searchParams }: { searchParams: Promise<{ error?: str
         name="name"
         autoComplete="username"
         placeholder="Usuario"
-        className="w-full rounded border border-zinc-700 bg-transparent px-3 py-2"
+        className="w-full rounded border border-input bg-transparent px-3 py-2"
       />
       <input
         name="password"
         type="password"
         autoComplete="current-password"
         placeholder="Contraseña"
-        className="w-full rounded border border-zinc-700 bg-transparent px-3 py-2"
+        className="w-full rounded border border-input bg-transparent px-3 py-2"
       />
-      <button type="submit" className="w-full rounded bg-zinc-100 px-3 py-2 text-zinc-900">
+      <button type="submit" className="w-full rounded bg-primary px-3 py-2 text-primary-foreground">
         Entrar
       </button>
     </form>

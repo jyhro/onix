@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { Grant, User, Workspace } from "@/lib/system-store";
 
 const input =
-  "w-full rounded border border-zinc-700 bg-transparent px-3 py-2 text-sm";
+  "w-full rounded border border-input bg-transparent px-3 py-2 text-sm";
 
 export function WorkspacesUI({
   initialWorkspaces,
@@ -73,14 +73,14 @@ export function WorkspacesUI({
         <h1 className="mb-3 text-xl font-semibold">Workspaces</h1>
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-zinc-400">
+            <tr className="text-left text-muted-foreground">
               <th className="py-1">Nombre</th>
               <th className="py-1">Grants</th>
             </tr>
           </thead>
           <tbody>
             {workspaces.map((w) => (
-              <tr key={w.id} className="border-t border-zinc-800 align-top">
+              <tr key={w.id} className="border-t border-border align-top">
                 <td className="py-1">{w.name}</td>
                 <td className="py-1">
                   {grants

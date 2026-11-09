@@ -3,16 +3,14 @@
 import { useEffect, useState } from "react";
 import { Select, SelectItem, SelectPopup, SelectTrigger } from "./ui/select";
 
-export const COLOR_PRESETS = ["neutral", "stone", "zinc", "slate"] as const;
+export const COLOR_PRESETS = ["obsidian", "obsidian-claro"] as const;
 export type ColorPreset = (typeof COLOR_PRESETS)[number];
 export const COLOR_PRESET_KEY = "onix-color-preset";
-export const DEFAULT_PRESET: ColorPreset = "neutral";
+export const DEFAULT_PRESET: ColorPreset = "obsidian";
 
 const LABELS: Record<ColorPreset, string> = {
-  neutral: "Neutro",
-  stone: "Piedra",
-  zinc: "Zinc",
-  slate: "Pizarra",
+  obsidian: "Obsidiana (oscuro)",
+  "obsidian-claro": "Obsidiana claro",
 };
 
 function isPreset(v: string | null): v is ColorPreset {
@@ -34,6 +32,13 @@ export function readStoredPreset(): ColorPreset {
 
 export function applyColorPreset(preset: ColorPreset): void {
   document.documentElement.dataset.theme = preset;
+  // next-themes fuerza `.dark` por defecto; el preset claro lo retira para
+  // que `dark:` y el editor sigan al preset, no a la clase.
+  if (preset === "obsidian-claro") {
+    document.documentElement.classList.remove("dark");
+  } else {
+    document.documentElement.classList.add("dark");
+  }
 }
 
 // Selector de preset de color (Ajustes → Apariencia → Color).
