@@ -19,4 +19,6 @@ services:
 
 volumes:
   onix_vault:
+    external: true # volumen creado una vez en el host: sobrevive a recreates
   onix_data:
+    external: true
