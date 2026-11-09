@@ -30,9 +30,16 @@ export async function middleware(req: NextRequest) {
   // del middleware no puede leer los JSON del sistema. Sin sesión → 401 aquí.
   // Excepción: /admin/* se cierra por rol del JWT (sin fs): owner|admin pasan,
   // con sesión pero otro rol → 403 real antes del render (el streaming PPR no
-  // puede cambiar el status una vez emitido el shell).
+  // puede cambiar el status una vez emitido el shell). Sesión válida sin claim
+  // `role` (anterior al fix) → redirect a /login para re-autenticar, no 403:
+  // sin UI de cambio de roles el claim no se desactualiza y esto basta.
   if (pathname.startsWith("/admin/")) {
-    const role = session?.role;
+    const role = session.role;
+    if (role === undefined) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
     if (role !== "owner" && role !== "admin") {
       return new NextResponse("sin permiso", { status: 403 });
     }

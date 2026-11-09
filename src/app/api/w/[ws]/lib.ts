@@ -32,7 +32,7 @@ export async function requireGrant(req: Request, ws: string, perm: Perm): Promis
 export function errRes(e: unknown): NextResponse {
   const msg = e instanceof Error ? e.message : "error";
   const status = (e as { status?: number })?.status;
-  if (status === 400 || status === 401 || status === 403 || status === 413)
+  if (status === 400 || status === 401 || status === 403 || status === 404 || status === 413)
     return NextResponse.json({ error: msg }, { status });
   if (msg.includes("fuera del vault") || msg.includes("vacío") || msg.includes("inválido"))
     return NextResponse.json({ error: msg }, { status: 400 });

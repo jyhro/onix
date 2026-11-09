@@ -36,10 +36,35 @@ export async function POST(req: Request): Promise<NextResponse> {
       perms?: unknown;
     }>(req);
     if (typeof body.userId === "string" && typeof body.wsId === "string") {
+      if (typeof body.name !== "undefined") {
+        throw Object.assign(new Error("cuerpo mixto: { name } o { userId, wsId, perm }"), {
+          status: 400,
+        });
+      }
       const perms = body.perms ?? body.perm ?? "read";
       const list = (Array.isArray(perms) ? perms : [perms]) as Perm[];
+      for (const p of list) {
+        if (p !== "read" && p !== "write") {
+          throw Object.assign(new Error(`permiso inválido: ${String(p)}`), { status: 400 });
+        }
+      }
+      const [users, workspaces] = await Promise.all([listUsers(), listWorkspaces()]);
+      if (!users.some((u) => u.id === body.userId)) {
+        throw Object.assign(new Error("usuario no existe"), { status: 404 });
+      }
+      if (!workspaces.some((w) => w.id === body.wsId)) {
+        throw Object.assign(new Error("workspace no existe"), { status: 404 });
+      }
       const g = await grant(body.userId, body.wsId, list);
       return NextResponse.json({ grant: g }, { status: 201 });
+    }
+    if (typeof body.userId !== "undefined" || typeof body.wsId !== "undefined") {
+      if (typeof body.name !== "undefined") {
+        throw Object.assign(new Error("cuerpo mixto: { name } o { userId, wsId, perm }"), {
+          status: 400,
+        });
+      }
+      throw Object.assign(new Error("se esperaba { userId, wsId, perm }"), { status: 400 });
     }
     if (typeof body.name === "string") {
       const ws = await createWorkspace(body.name);
