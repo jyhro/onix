@@ -43,6 +43,11 @@ export async function POST(req: Request): Promise<NextResponse> {
       }
       const perms = body.perms ?? body.perm ?? "read";
       const list = (Array.isArray(perms) ? perms : [perms]) as Perm[];
+      if (list.length === 0) {
+        throw Object.assign(new Error("perms vacío: se esperaba al menos un permiso"), {
+          status: 400,
+        });
+      }
       for (const p of list) {
         if (p !== "read" && p !== "write") {
           throw Object.assign(new Error(`permiso inválido: ${String(p)}`), { status: 400 });
