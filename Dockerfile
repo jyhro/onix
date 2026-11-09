@@ -3,18 +3,23 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-FROM node:24-alpine AS build
+FROM node:24-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM node:24-alpine AS run
+FROM node:24-alpine AS runner
 WORKDIR /app
-ENV NODE_ENV=production
-COPY --from=build /app/package.json /app/package-lock.json ./
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/.next ./.next
-COPY --from=build /app/public ./public
+ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0
+ENV VAULT_ROOT=/vault DATA_ROOT=/data
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nextjs \
+  && mkdir -p /vault /data \
+  && chown nextjs:nodejs /vault /data
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+USER nextjs
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["node", "server.js"]

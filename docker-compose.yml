@@ -5,6 +5,8 @@ services:
       - "3000:3000"
     env_file: .env
     environment:
-      VAULT_ROOT: /app/vault
+      VAULT_ROOT: /vault
+      DATA_ROOT: /data
     volumes:
-      - ./vault:/app/vault
+      - ./vault:/vault
+      - ./data:/data

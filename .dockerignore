@@ -3,3 +3,7 @@ node_modules
 .git
 .env
 *.log
+vault
+data
+.superpowers
+coverage

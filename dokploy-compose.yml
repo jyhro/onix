@@ -1,0 +1,22 @@
+# Dokploy (raw compose): build desde git + volúmenes nombrados.
+# Sin `ports`: Dokploy enruta vía dominio al puerto 3000.
+# SESSION_SECRET lo inyecta el dueño en Dokploy (no inventar).
+services:
+  onix:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      VAULT_ROOT: /vault
+      DATA_ROOT: /data
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET requerido}
+    volumes:
+      - onix_vault:/vault
+      - onix_data:/data
+
+volumes:
+  onix_vault:
+  onix_data:
