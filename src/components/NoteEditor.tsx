@@ -5,6 +5,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppShell } from "./AppShell";
+import { MarkdownPreview } from "./MarkdownPreview";
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
@@ -51,6 +52,8 @@ interface NoteEditorProps {
   id: string;
   initialContent: string;
   canWrite: boolean;
+  /** Ids con grant para el preview (GET /api/w/[ws]/notes). */
+  ids: string[];
 }
 
 // Editor markdown con guardado automático (debounce 800 ms).
@@ -60,6 +63,7 @@ export function NoteEditor({
   id,
   initialContent,
   canWrite,
+  ids,
 }: NoteEditorProps) {
   const [value, setValue] = useState(initialContent);
   const [status, setStatus] = useState<SaveState>("idle");
@@ -127,16 +131,26 @@ export function NoteEditor({
                   : ""}
         </span>
       </div>
-      <div className="min-h-0 flex-1 overflow-auto">
-        <CodeMirror
-          value={value}
-          onChange={onChange}
-          extensions={[markdown()]}
-          theme={editorTheme}
-          editable={canWrite}
-          basicSetup={{ lineNumbers: true, foldGutter: false }}
-          className="h-full"
-        />
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <div className="min-h-0 flex-1 overflow-auto">
+          <CodeMirror
+            value={value}
+            onChange={onChange}
+            extensions={[markdown()]}
+            theme={editorTheme}
+            editable={canWrite}
+            basicSetup={{ lineNumbers: true, foldGutter: false }}
+            className="h-full"
+          />
+        </div>
+        <div className="min-h-0 flex-1 border-t border-border md:border-t-0 md:border-l">
+          <MarkdownPreview
+            ws={ws}
+            content={value}
+            ids={ids}
+            canWrite={canWrite}
+          />
+        </div>
       </div>
     </div>
   );

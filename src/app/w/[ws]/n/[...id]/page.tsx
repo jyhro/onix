@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { requireGrant, workspaceRoot } from "@/app/api/w/[ws]/lib";
 import { NoteView } from "@/components/NoteEditor";
 import { SESSION_COOKIE } from "@/lib/session";
-import { readNote } from "@/lib/vault";
+import { listNotes, readNote } from "@/lib/vault";
 
 type Params = { params: Promise<{ ws: string; id: string[] }> };
 
@@ -56,8 +56,12 @@ async function NoteGate({ ws, id }: { ws: string; id: string[] }) {
   }
 
   let content: string;
+  let ids: string[];
   try {
-    content = (await readNote(workspaceRoot(ws), noteId)).content;
+    const root = workspaceRoot(ws);
+    content = (await readNote(root, noteId)).content;
+    // Ids con grant para el preview de `[[enlaces]]` (existe vs por crear).
+    ids = await listNotes(root);
   } catch {
     notFound();
   }
@@ -68,6 +72,7 @@ async function NoteGate({ ws, id }: { ws: string; id: string[] }) {
       id={noteId}
       initialContent={content}
       canWrite={canWrite}
+      ids={ids}
     />
   );
 }
