@@ -2,6 +2,9 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "../themes/neutral.css";
+@import "../themes/stone.css";
+@import "../themes/zinc.css";
+@import "../themes/slate.css";
 
 @custom-variant dark (&:is(.dark *));
 
