@@ -1,0 +1,10 @@
+services:
+  onix:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file: .env
+    environment:
+      VAULT_ROOT: /app/vault
+    volumes:
+      - ./vault:/app/vault
