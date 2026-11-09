@@ -140,6 +140,19 @@ export async function grant(
   return created;
 }
 
+// Listados para el admin (Task 7). Solo datos públicos de usuario.
+export async function listUsers(): Promise<User[]> {
+  return (await readJson<StoredUser>("users.json")).map(publicUser);
+}
+
+export async function listWorkspaces(): Promise<Workspace[]> {
+  return readJson<Workspace>("workspaces.json");
+}
+
+export async function listGrants(): Promise<Grant[]> {
+  return readJson<Grant>("grants.json");
+}
+
 // Síncrono a propósito: el chequeo de permisos no hace hash ni escribe.
 export function can(userId: string, wsId: string, perm: Perm): boolean {
   const users = readJsonSync<StoredUser>("users.json");
